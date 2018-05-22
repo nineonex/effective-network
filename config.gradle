@@ -1,0 +1,19 @@
+ext {
+
+    // SDK及工具版本
+    compile_sdk_version = 27
+    build_tools_version = '27.0.3'
+    min_sdk_version = 16
+    target_sdk_version = 27
+
+    // app模块构建版本
+    version_code = 1
+    version_name = '1.0.0'
+
+    // 库构建版本
+    network_version_code = 1
+    network_version_name = '1.0.0-SNAPSHOT'
+
+    // 依赖第三方库版本
+    support_version = '27.1.1'
+}
