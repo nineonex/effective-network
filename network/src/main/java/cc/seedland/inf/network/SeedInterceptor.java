@@ -1,8 +1,6 @@
 package cc.seedland.inf.network;
 
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -66,18 +64,24 @@ class SeedInterceptor implements Interceptor {
             if(contentType != null) {
                 if(contentType.contains("application/json")) {  // 处理json
                     String raw = response.body().string();
-                    BeanWrapper wrapper = GsonHolder.getInstance().fromJson(raw, BeanWrapper.class);
-                    if(wrapper.checkSign() && wrapper.code == Networkit.RESPONSE_CODE_SUCCESS) {
+                    JSONObject wrapper = new JSONObject(raw);
+                    int code = wrapper.optInt("error_code", Networkit.RESPONSE_CODE_NO);
+                    if(code == Networkit.RESPONSE_CODE_SUCCESS) {
                         MediaType mediaType = response.body().contentType();
-                        JsonElement bodyObj = wrapper.data == null ? new JsonObject() : wrapper.data;
-                        bodyObj.getAsJsonObject().addProperty("raw", raw);
-                        ResponseBody body = ResponseBody.create(mediaType, GsonHolder.getInstance().toJson(bodyObj));
+                        JSONObject jsonBody = wrapper.optJSONObject("data");
+                        if(jsonBody == null) {
+                            jsonBody = new JSONObject();
+                        }
+                        jsonBody.put("raw", raw);
+
+                        ResponseBody body = ResponseBody.create(mediaType, jsonBody.toString());
                         return response.newBuilder()
                                 .code(response.code())
                                 .body(body)
                                 .build();
                     }else {
-                        throw new IOException(wrapper.message);
+
+                        throw new IOException(wrapper.optString("error_message"));
                     }
                 }else if(contentType.contains("image/jpeg")) { // 处理图片
                     return response;

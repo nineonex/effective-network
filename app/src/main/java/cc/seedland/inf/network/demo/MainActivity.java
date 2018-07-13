@@ -15,6 +15,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.BitmapCallback;
 import com.lzy.okgo.model.Response;
 
+import org.json.JSONObject;
+
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.Signature;
@@ -23,9 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cc.seedland.inf.network.GsonHolder;
+import cc.seedland.inf.network.JsonCallback;
 import cc.seedland.inf.network.Networkit;
-import cc.seedland.inf.network.SeedCallback;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -64,16 +65,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_perform_get:
-                OkGo.<PayMethodBean>get("https://test-open.seedland.cc/unipay/rest/1.0/pay/supports")
+                OkGo.<JSONObject>get("https://test-open.seedland.cc/unipay/rest/1.0/pay/supports")
                         .params("channel_id", 282591)
-                        .execute(new SeedCallback<PayMethodBean>(PayMethodBean.class) {
+                        .params("merchant_id", "5188611100000000")
+                        .execute(new JsonCallback() {
                             @Override
-                            public void onSuccess(Response<PayMethodBean> response) {
-                                super.onSuccess(response);
+                            public void onSuccess(Response<JSONObject> response) {
                                 getResultV.setText(response.body().toString());
                             }
                             @Override
-                            public void onError(Response<PayMethodBean> response) {
+                            public void onError(Response<JSONObject> response) {
                                 super.onError(response);
 
                                 String msg = "unknown error";
@@ -111,27 +112,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "hN+sUQWNVV1OMi9M0WwoH0u/NG+ZhZRootpZ6UA+GxUJAzAkEAoJwZrmetqnuBbWL41PhoLrD3yn2BJDcvWuwkVBUEdZl5IsPhcHPvYFm3f2DI++" +
                         "7dn6Ulfft4vMv0qaNAXwNKhw==", params);
 
-                OkGo.<PayCallBean>post("https://test-open.seedland.cc/unipay/rest/1.0/pay?pay_type=alipay.app")
-                        .tag("seedland")
-                        .upJson(GsonHolder.getInstance().toJson(signParams))
-                        .execute(new SeedCallback<PayCallBean>(PayCallBean.class) {
-                            @Override
-                            public void onSuccess(Response<PayCallBean> response) {
-                                super.onSuccess(response);
-                                signPostResultV.setText(response.body().toString());
-                            }
-
-                            @Override
-                            public void onError(Response<PayCallBean> response) {
-                                super.onError(response);
-                                String msg = "unknown error";
-                                if(response != null && response.getException() != null) {
-                                    msg = response.getException().getMessage();
-
-                                }
-                                signPostResultV.setText(msg);
-                            }
-                        });
+//                OkGo.<PayCallBean>post("https://test-open.seedland.cc/unipay/rest/1.0/pay?pay_type=alipay.app")
+//                        .tag("seedland")
+//                        .upJson(GsonHolder.getInstance().toJson(signParams))
+//                        .execute(new SeedCallback<PayCallBean>(PayCallBean.class) {
+//                            @Override
+//                            public void onSuccess(Response<PayCallBean> response) {
+//                                super.onSuccess(response);
+//                                signPostResultV.setText(response.body().toString());
+//                            }
+//
+//                            @Override
+//                            public void onError(Response<PayCallBean> response) {
+//                                super.onError(response);
+//                                String msg = "unknown error";
+//                                if(response != null && response.getException() != null) {
+//                                    msg = response.getException().getMessage();
+//
+//                                }
+//                                signPostResultV.setText(msg);
+//                            }
+//                        });
                 break;
         }
     }
@@ -208,26 +209,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         params.put("mobile", "18810057981");
         params.put("password", "12345678");
 
-        OkGo.<LoginBean>post("https://test-open.seedland.cc/passport/api/rest/1.0/login/password?")
-                .params(params)
-                .execute(new SeedCallback<LoginBean>(LoginBean.class) {
-                    @Override
-                    public void onSuccess(Response<LoginBean> response) {
-                        super.onSuccess(response);
-                        postResultV.setText(response.body().toString());
-                    }
-
-                    @Override
-                    public void onError(Response<LoginBean> response) {
-                        super.onError(response);
-
-                        String msg = "unknown error";
-                        if(response != null && response.getException() != null) {
-                            msg = response.getException().getMessage();
-
-                        }
-                        postResultV.setText(msg);
-                    }
-                });
+//        OkGo.<LoginBean>post("https://test-open.seedland.cc/passport/api/rest/1.0/login/password?")
+//                .params(params)
+//                .execute(new SeedCallback<LoginBean>(LoginBean.class) {
+//                    @Override
+//                    public void onSuccess(Response<LoginBean> response) {
+//                        super.onSuccess(response);
+//                        postResultV.setText(response.body().toString());
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<LoginBean> response) {
+//                        super.onError(response);
+//
+//                        String msg = "unknown error";
+//                        if(response != null && response.getException() != null) {
+//                            msg = response.getException().getMessage();
+//
+//                        }
+//                        postResultV.setText(msg);
+//                    }
+//                });
     }
 }

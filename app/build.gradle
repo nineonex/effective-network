@@ -9,6 +9,9 @@ android {
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        resValue "string", "channel", "test"         // 渠道号
+        resValue "string", "key", "hay8qwz"          // 开发者Key
     }
     buildTypes {
         release {

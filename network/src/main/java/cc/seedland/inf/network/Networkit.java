@@ -35,6 +35,8 @@ public class Networkit {
     /** 请求返回码-成功 */
     public static final int RESPONSE_CODE_SUCCESS = 0;
 
+    public static final int RESPONSE_CODE_NO = -1;
+
     /** OkGo参数-连接／读写等待时间 */
     private static final long WAITTING_MILLISECONDS = 10000;
 

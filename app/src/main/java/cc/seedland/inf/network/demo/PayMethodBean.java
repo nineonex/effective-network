@@ -1,6 +1,6 @@
 package cc.seedland.inf.network.demo;
 
-import com.google.gson.annotations.SerializedName;
+//import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -14,21 +14,21 @@ import cc.seedland.inf.network.BaseBean;
  **/
 public class PayMethodBean extends BaseBean {
 
-    @SerializedName("expire_time")
-    public int expireTime;
-    @SerializedName("support_pay_type")
-    public List<MethodItemBean> methods;
-
-    public static class MethodItemBean {
-        @SerializedName("pay_type")
-        public String type;
-        @SerializedName("pay_name")
-        public String name;
-        @SerializedName("merchant_id")
-        public String mechantId;
-        public String toast;
-        public int status;
-        @SerializedName("pay_ico")
-        public String icon;
-    }
+//    @SerializedName("expire_time")
+//    public int expireTime;
+//    @SerializedName("support_pay_type")
+//    public List<MethodItemBean> methods;
+//
+//    public static class MethodItemBean {
+//        @SerializedName("pay_type")
+//        public String type;
+//        @SerializedName("pay_name")
+//        public String name;
+//        @SerializedName("merchant_id")
+//        public String mechantId;
+//        public String toast;
+//        public int status;
+//        @SerializedName("pay_ico")
+//        public String icon;
+//    }
 }

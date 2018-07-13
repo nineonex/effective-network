@@ -1,7 +1,5 @@
 package cc.seedland.inf.network.demo;
 
-import com.google.gson.annotations.SerializedName;
-
 import cc.seedland.inf.network.BaseBean;
 
 /**
@@ -14,7 +12,7 @@ public class LoginBean extends BaseBean {
     public String mobile;
     public String nickname;
     /** 登录token */
-    @SerializedName("sso_tk") public String token;
+    public String token;
 
     @Override
     public String toString() {

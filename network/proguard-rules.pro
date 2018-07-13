@@ -31,31 +31,14 @@
 -dontwarn okio.**
 -keep class okio.**{*;}
 
-
-##---------------Begin: proguard configuration for Gson  ----------
-# Gson uses generic type information stored in a class file when working with fields. Proguard
-# removes such information by default, so configure it to keep all of it.
+# 保护泛型与反射
 -keepattributes Signature
-
-# For using GSON @Expose annotation
+# 保护注解　
 -keepattributes *Annotation*
-
-# Gson specific classes
--dontwarn sun.misc.**
-#-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
 -keep public class * extends cc.seedland.inf.network.BaseBean{*;}
 -keep class cc.seedland.inf.network.BaseBean{*;}
--keep class cc.seedland.inf.network.BeanWrapper{*;}
+
 -keep class cc.seedland.inf.network.Networkit{*;}
--keep class cc.seedland.inf.network.SeedCallback{*;}
--keep class cc.seedland.inf.network.GsonHolder{*;}
-
-# Prevent proguard from stripping interface information from TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
-##---------------End: proguard configuration for Gson  ----------
+-keep class cc.seedland.inf.network.JsonCallback{*;}
