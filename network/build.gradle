@@ -13,11 +13,30 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        resValue "string", "host", "https://open.seedland.cc"
+        buildConfigField("boolean", "API_ENV", "true")
+
     }
 
     buildTypes {
+
+        debug {
+            resValue "string", "host", "https://test-open.seedland.cc"
+        }
+
+//        dev.initWith(release)
+        dev {
+            resValue "string", "host", "https://test-open.seedland.cc"
+            minifyEnabled true      // 混淆
+            zipAlignEnabled true    // Zipalign优化
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
-            minifyEnabled false
+            resValue "string", "host", "https://open.seedland.cc"
+            buildConfigField("boolean", "API_ENV", "false")
+            minifyEnabled true      // 混淆
+            zipAlignEnabled true    // Zipalign优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,6 +51,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.lzy.net:okgo:3.0.4'
-    implementation 'com.google.code.gson:gson:2.8.4'
+//    implementation 'com.lzy.net:okgo:3.0.4'
+//    implementation 'com.google.code.gson:gson:2.8.4'
+
+    api 'com.lzy.net:okgo:3.0.4'
+    api 'com.google.code.gson:gson:2.8.4'
 }
+
+apply from: 'publish.gradle'

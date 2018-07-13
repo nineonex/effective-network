@@ -30,6 +30,7 @@ import okhttp3.OkHttpClient;
  */
 public class Networkit {
 
+    public static final String TAG = "Networkit";
 
     /** 请求返回码-成功 */
     public static final int RESPONSE_CODE_SUCCESS = 0;
@@ -42,27 +43,32 @@ public class Networkit {
     private static Application APP;
     private static String ERROR_NETWORK;
     private static String ERROR_SERVER;
+    private static String ERROR_DEFAULT;
+    private static String HOST;
 
     private Networkit() {
-        throw new IllegalStateException("not supported");
+
     }
 
-    public static void init(Application app) {
+    public static void init(Application app, String channel, String key) {
 
         if(app == null) {
             throw new IllegalArgumentException("your application is in wrong state, please restart and retry");
         }
         if(APP == null) {
             APP = app;
+            HOST = app.getString(R.string.host);
             ERROR_NETWORK = APP.getString(R.string.error_network);
             ERROR_SERVER = APP.getString(R.string.error_server);
+            ERROR_DEFAULT = APP.getString(R.string.error_default);
+            SignHelper.init(app, channel, key);
 
             // 初始化OkGo
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.addInterceptor(new SeedInterceptor());
-            if(BuildConfig.DEBUG) {
+            if(BuildConfig.API_ENV) {
                 // 日志支持
-                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("seeldand-passport");
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("seeldand-network");
                 loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
                 loggingInterceptor.setColorLevel(Level.INFO);
                 builder.addInterceptor(loggingInterceptor);
@@ -96,6 +102,15 @@ public class Networkit {
     }
 
     /**
+     * 获取完整地址
+     * @param path
+     * @return
+     */
+    public static String generateFullUrl(String path) {
+        return HOST.concat(path);
+    }
+
+    /**
      * 网络是否连接
      * @return
      */
@@ -112,5 +127,9 @@ public class Networkit {
 
     public static String getServerError() {
         return ERROR_SERVER;
+    }
+
+    public static String getDefaultError() {
+        return ERROR_DEFAULT;
     }
 }
