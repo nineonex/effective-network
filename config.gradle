@@ -11,8 +11,10 @@ ext {
     version_name = '1.0.0'
 
     // 库构建版本
-    network_version_code = 1
-    network_version_name = '1.0.0-SNAPSHOT'
+    network_version_code = 2
+//    network_version_name = '1.0.0-SNAPSHOT'
+    network_version_name = '1.0.1'
+//    network_version_name = '1.0.0'
 
     // 依赖第三方库版本
     support_version = '27.1.1'
