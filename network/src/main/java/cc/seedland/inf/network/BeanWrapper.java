@@ -13,10 +13,12 @@ import com.google.gson.annotations.SerializedName;
 
 class BeanWrapper {
     /** 返回码  */
-    @SerializedName("error_code") public int code;
+    @SerializedName(value = "error_code", alternate = {"errcode"})
+    public int code;
 
     /** 返回消息 */
-    @SerializedName("error_message") public String message;
+    @SerializedName(value = "error_message", alternate = {"errmsg"})
+    public String message;
 
     // 时间戳
     private long timestamp;

@@ -28,7 +28,7 @@ publishing {
     publications {
         library(MavenPublication) {
             groupId 'cc.seedland.inf'
-            artifactId 'network'
+            artifactId network_artifact_id
             version network_version_name
 
             def type = project.hasProperty('buildType') ? buildType : 'Release'
@@ -52,14 +52,6 @@ publishing {
 
     repositories{
         maven {
-
-//            if (network_version_name.contains("SNAPSHOT")) {
-//                url "http://developer.seedland.cc/nexus/repository/maven-snapshots/"
-//            } else if(network_version_name.contains("dev")){
-//                url "http://developer.seedland.cc/nexus/repository/maven-dev/"
-//            } else {
-//                url "http://developer.seedland.cc/nexus/repository/maven-releases/"
-//            }
 
             def type = project.hasProperty('buildType') ? buildType : 'Release'
 
