@@ -48,20 +48,20 @@ class SignHelper {
 
     }
 
-    static void init(Context context, String channel, String key) {
-        if(TextUtils.isEmpty(channel)) {
+    static void init(Context context, Map<String, String> signParams) {
+        if(signParams == null || TextUtils.isEmpty(signParams.get("channel"))) {
             throw new IllegalArgumentException("channel should not be null or empty");
         }
 
-        if(TextUtils.isEmpty(key)) {
+        if(signParams == null || TextUtils.isEmpty(signParams.get("key"))) {
             throw new IllegalArgumentException("key should not be null or empty");
         }
 
-        FIXED_PARAMS.put("channel", channel);
+        FIXED_PARAMS.put("channel", signParams.get("channel"));
         FIXED_PARAMS.put("device_type", Build.MANUFACTURER + "-" + Build.MODEL);
         FIXED_PARAMS.put("device_mac", getMacAddress());
         FIXED_PARAMS.put("device_imei", getDeviceId(context));
-        KEY = key;
+        KEY = signParams.get("key");
 
     }
 

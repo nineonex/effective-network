@@ -12,6 +12,7 @@ import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -50,8 +51,12 @@ public class Networkit {
 
     }
 
-    public static void init(Application app, String channel, String key) {
+    public static void init(Application app) {
+        init(app, null);
+    }
 
+
+    public static void init(Application app, Map<String, String> signParams) {
         if(app == null) {
             throw new IllegalArgumentException("your application is in wrong state, please restart and retry");
         }
@@ -61,10 +66,13 @@ public class Networkit {
             ERROR_NETWORK = APP.getString(R.string.error_network);
             ERROR_SERVER = APP.getString(R.string.error_server);
             ERROR_DEFAULT = APP.getString(R.string.error_default);
-            SignHelper.init(app, channel, key);
 
             // 初始化OkGo
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            if(signParams != null && !signParams.isEmpty()) { // 有签名参数
+                builder.addInterceptor(new SignInterceptor());
+                SignHelper.init(app, signParams);
+            }
             builder.addInterceptor(new SeedInterceptor());
             if(BuildConfig.API_ENV) {
                 // 日志支持

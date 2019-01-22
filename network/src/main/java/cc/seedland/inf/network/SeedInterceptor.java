@@ -37,27 +37,6 @@ class SeedInterceptor implements Interceptor {
             return chain.proceed(request);
         }
 
-        HttpUrl url = request.url();
-        String rawUrl = url.toString();
-        LogUtil.d("raw url ----> " + rawUrl);
-        // 获取原有参数
-        Map<String, String> params = new HashMap<>();
-        for(String name : url.queryParameterNames()) {
-            params.put(name, url.queryParameter(name));
-        }
-        // 增加公共参数并签名
-        String queryString = SignHelper.signPublic(params);
-
-        HttpUrl newUrl = new HttpUrl.Builder()
-                .host(url.host())
-                .scheme(url.scheme())
-                .encodedPath(url.encodedPath())
-                .encodedFragment(url.encodedFragment())
-                .build();
-        String newFullUrl = newUrl.toString().concat("?").concat(queryString);
-        LogUtil.d("signed url ----> " + newFullUrl);
-        request = request.newBuilder().url(newFullUrl).build();
-
         // 处理响应
         try{
             Response response = chain.proceed(request);
@@ -70,7 +49,7 @@ class SeedInterceptor implements Interceptor {
                     if(wrapper.checkSign() && wrapper.code == Networkit.RESPONSE_CODE_SUCCESS) {
                         MediaType mediaType = response.body().contentType();
                         JsonElement bodyObj = wrapper.data == null ? new JsonObject() : wrapper.data;
-                        bodyObj.getAsJsonObject().addProperty("raw", raw);
+//                        bodyObj.getAsJsonObject().addProperty("raw", raw);
                         ResponseBody body = ResponseBody.create(mediaType, GsonHolder.getInstance().toJson(bodyObj));
                         return response.newBuilder()
                                 .code(response.code())

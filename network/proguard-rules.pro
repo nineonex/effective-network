@@ -49,7 +49,7 @@
 -keep class cc.seedland.inf.network.BaseBean{*;}
 -keep class cc.seedland.inf.network.BeanWrapper{*;}
 -keep class cc.seedland.inf.network.Networkit{*;}
--keep class cc.seedland.inf.network.SeedCallback{*;}
+-keep class cc.seedland.inf.network.JsonCallback{*;}
 -keep class cc.seedland.inf.network.GsonHolder{*;}
 
 # Prevent proguard from stripping interface information from TypeAdapterFactory,

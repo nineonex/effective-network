@@ -12,7 +12,7 @@ ext {
 
     // 库构建版本
     network_version_code = 2
-    network_version_name = '1.0.0'
+    network_version_name = '1.0.1'
     network_artifact_id = 'network-apk'
 
     // 依赖第三方库版本

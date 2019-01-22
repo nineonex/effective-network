@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import cc.seedland.inf.network.GsonHolder;
+import cc.seedland.inf.network.JsonCallback;
 import cc.seedland.inf.network.Networkit;
-import cc.seedland.inf.network.SeedCallback;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signPostResultV = findViewById(R.id.main_sign_post_result);
 
 
-        Networkit.init(getApplication(), "test", "hay8qwz");
+//        Networkit.init(getApplication(), "test", "hay8qwz");
+
+        // 不验签
+        Networkit.init(getApplication());
 
         final ImageView imv = findViewById(R.id.main_imv);
         OkGo.<Bitmap>get("http://img.sj33.cn/uploads/allimg/201402/7-140223103130591.png")
@@ -66,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_perform_get:
                 OkGo.<PayMethodBean>get("https://test-open.seedland.cc/unipay/rest/1.0/pay/supports")
                         .params("channel_id", 282591)
-                        .execute(new SeedCallback<PayMethodBean>(PayMethodBean.class) {
+                        .params("merchant_id", "5188611100000000")
+                        .execute(new JsonCallback<PayMethodBean>(PayMethodBean.class) {
                             @Override
                             public void onSuccess(Response<PayMethodBean> response) {
-                                super.onSuccess(response);
                                 getResultV.setText(response.body().toString());
                             }
                             @Override
@@ -86,6 +89,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
                 break;
             case R.id.main_perform_post:
+
+                OkGo.<CustomerRspBean>post("http://msales-test.seedland.cc:8014/FrameWeb/FrameService/Api.ashx?option=func&funcid=tokerCustomerUnSubscriptionListA")
+//                        .tag("external")
+//                        .upJson(GsonHolder.getInstance().toJson(req))
+                .upJson("{\"_datatype\":\"text\",\"_param\":{\"Level\":\"\",\"MemberID\":\"\",\"ProjectID\":\"c72d570c-bc7c-11e7-8be1-005056bda220\",\"Search\":\"\",\"Status\":\"\",\"TimeFilter\":\"\",\"TimeValue\":\"0\",\"_dataid\":\"mSiteCustomerUnSubscriptionListA_Select\",\"_pageindex\":\"1\",\"_pagesize\":\"10\",\"orderby\":\"order by CatchTime DESC\",\"AuthCompanyID\":\"ede1b679-3546-11e7-a3f8-5254007b6f02\",\"JobCode\":\"xszj\",\"JobOrgID\":\"4D05F2AC-B429-8B8D-AC39-EFFE12FECE1A\",\"OrgID\":\"4D05F2AC-B429-8B8D-AC39-EFFE12FECE1A\",\"ProductID\":\"ee3b2466-3546-11e7-a3f8-5254007b6f02\",\"TeamOrgID\":\"4D05F2AC-B429-8B8D-AC39-EFFE12FECE1A\",\"UserID\":\"aa587a4b-7531-11e7-97a2-005056bda220\",\"projectID\":\"c72d570c-bc7c-11e7-8be1-005056bda220\"}}")
+                        .execute(new JsonCallback<CustomerRspBean>(CustomerRspBean.class) {
+                            @Override
+                            public void onSuccess(Response<CustomerRspBean> response) {
+                                postResultV.setText(response.body().customers.size() + " customers");
+                            }
+                        });
 
                 break;
             case R.id.main_perform_sign_post:
@@ -114,10 +128,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 OkGo.<PayCallBean>post("https://test-open.seedland.cc/unipay/rest/1.0/pay?pay_type=alipay.app")
                         .tag("seedland")
                         .upJson(GsonHolder.getInstance().toJson(signParams))
-                        .execute(new SeedCallback<PayCallBean>(PayCallBean.class) {
+                        .execute(new JsonCallback<PayCallBean>(PayCallBean.class) {
                             @Override
                             public void onSuccess(Response<PayCallBean> response) {
-                                super.onSuccess(response);
                                 signPostResultV.setText(response.body().toString());
                             }
 
@@ -210,10 +223,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         OkGo.<LoginBean>post("https://test-open.seedland.cc/passport/api/rest/1.0/login/password?")
                 .params(params)
-                .execute(new SeedCallback<LoginBean>(LoginBean.class) {
+                .execute(new JsonCallback<LoginBean>(LoginBean.class) {
                     @Override
                     public void onSuccess(Response<LoginBean> response) {
-                        super.onSuccess(response);
                         postResultV.setText(response.body().toString());
                     }
 
